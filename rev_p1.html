@@ -1,4 +1,4 @@
-<!--Cria uma aplicação front-end web utilizando javascript e html capaz de gernciar um cadastro de pedidos:
+<!--Cria uma aplicação front-end web utilizando javascript e html capaz de gerenciar um cadastro de pedidos:
 - Cadastro do pedido;
 - Listagem do pedido;
 - Exclusão do pedido;
@@ -7,8 +7,35 @@
 
 <html>
     <head>
+        <meta charset="UTF-8"/>
+    </head>    
         <body>
+            <form>
+                <input type="text" id="add-produto" placeholder="Produto">
+                <input type="text" id="add-valor" placeholder="Valor R$">
+                <input type="submit" value="Adicionar">
+            
+            </form>  
+
+            <p id="contador"></p>
+            <table>
+                    <tr>
+                    
+                    </tr>
+                    <tbody id="produtos">
+
+                    </tbody>    
+            </table>  
 
         </body>
-    </head>
+        <script>
+            this.novo=function(){
+                        this.itemEditar=-1;
+                        var elProduto = document.getElementById("add-produto");
+                        var elValor = document.getElementById("add-valor");
+                        elProduto.value="";
+                        elValor.value="";
+                    }
+        </script>
+    
 </html>
