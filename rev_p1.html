@@ -10,10 +10,10 @@
         <meta charset="UTF-8"/>
     </head>    
         <body>
-            <form action="javascript:void(0)" onsubmit="app.adicionar()">
+            <form>
                 <input type="text" id="add-produto" placeholder="Produto">
-                <input type="number" id="add-valor" placeholder="Valor R$">
-                <input type="submit" value="Adicionar">
+                <input type="number" id="add-valor" placeholder="Valor R$" onblur="mascara(this.id)">
+                <input type="button" value=" + " onclick="app.adicionar()">
             
             </form>  
 
@@ -25,14 +25,16 @@
                     <tbody id="produtos">
 
                     </tbody>    
-            </table>  
+            </table>
+            <input type="text" id="total" value="0" placeholder="Total R$" onblur="mascara(this.id)">  
 
         </body>
-        <script>
+        <script type="text/javascript">
 
-            var app= new function(){
-                this.elProdutos = document.getElementById("produtos");
+            var app = new function(){
                 this.produtos=[];
+                this.valores=[];
+                this.el = document.getElementById("produtos");
                 this.itemEditar =-1;
             
             this.novo=function(){
@@ -42,10 +44,20 @@
                 elProduto.value="";
                 elValor.value="";
             }
+
+            this.totalGeral = function () {             
+                var total = 0;
+                for (i = 0; i < this.valores.length; i++) {
+                    total = total + Number(this.valores[i]);
+                }
+                console.log(total);
+                document.getElementById('total').value = total;
+            };
             
             this.contar = function (qtd){
                 var elContador = document.getElementById("contador");
                 var nome="Produto";
+                
 
                 if (qtd){
                     if (qtd>1){
@@ -63,41 +75,49 @@
                 var dados = '';
                 for (i=0;i<this.produtos.length;i++){
                     dados+='<tr>';
-                    dados+='<td>'+this.produtos[i]+'</td>';
+                    dados+='<td colspan="10">'+this.produtos[i]+'</td>';
+                    dados+='<td>'+"  -  "+'</td>';
+                    dados+='<td colspan="10">'+this.valores[i]+'</td>';
                     dados+='<td><button onclick="app.excluir('+i+')">excluir</button></td>';
                     dados+='<td><button onclick="app.editar('+i+')">editar</button></td>';
                     dados+="</tr>";
                 }
 
                 this.contar(this.produtos.length);
-                this.elProdutos.innerHTML = dados;
+                this.el.innerHTML = dados;
+                
                     
             };
 
             this.excluir= function(item){
                 this.produtos.splice(item, 1);
+                this.valores.splice(item, 1);
                 this.listarTodos();
+                this.totalGeral();                                                
             }
 
             this.adicionar=function(){
                 var elProduto = document.getElementById("add-produto");
                 var produto =  elProduto.value;
+                var elValor = document.getElementById("add-valor");
+                var valor =  Number(document.getElementById("add-valor").value);
             
             
-                if(produto){
+                if(produto && valor){
                     if(this.itemEditar==-1){
                         this.produtos.push(produto);
+                        this.valores.push(valor);
                         
                     }else {
                         this.produtos.splice(this.itemEditar, 1, produto.trim());  
+                        this.valores.splice(this.itemEditar, 1, valor.trim());  
                         this.itemEditar=-1;
                     }
 
                     this.listarTodos();
                     this.novo();
-                
-                
                 }
+                this.totalGeral();
             
             };
 
@@ -109,9 +129,20 @@
                 var elNome = document.getElementById("add-produto");
                 elProduto.value=nome;
                 }
+            this.totalGeral();                
             }                
 
     };
+
+        app.totalGeral();
+
+
+    function mascara(campo){
+	campo = document.getElementById("add-valor");
+	oldValue = new Number(campo.value);
+	newValue = oldValue.toFixed(2);
+	campo.value = newValue;
+    }
 
     app.listarTodos();
         </script>
