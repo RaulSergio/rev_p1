@@ -12,7 +12,7 @@
         <body>
             <form action="javascript:void(0)" onsubmit="app.adicionar()">
                 <input type="text" id="add-produto" placeholder="Produto">
-                <input type="text" id="add-valor" placeholder="Valor R$">
+                <input type="number" id="add-valor" placeholder="Valor R$">
                 <input type="submit" value="Adicionar">
             
             </form>  
@@ -36,7 +36,7 @@
                 this.itemEditar =-1;
             
             this.novo=function(){
-                this.itemEditar=-1;
+                this.itemEditar =-1;
                 var elProduto = document.getElementById("add-produto");
                 var elValor = document.getElementById("add-valor");
                 elProduto.value="";
@@ -72,9 +72,48 @@
                 this.contar(this.produtos.length);
                 this.elProdutos.innerHTML = dados;
                     
+            };
+
+            this.excluir= function(item){
+                this.produtos.splice(item, 1);
+                this.listarTodos();
             }
+
+            this.adicionar=function(){
+                var elProduto = document.getElementById("add-produto");
+                var produto =  elProduto.value;
+            
+            
+                if(produto){
+                    if(this.itemEditar==-1){
+                        this.produtos.push(produto);
+                        
+                    }else {
+                        this.produtos.splice(this.itemEditar, 1, produto.trim());  
+                        this.itemEditar=-1;
+                    }
+
+                    this.listarTodos();
+                    this.novo();
+                
                 
                 }
+            
+            };
+
+            this.editar = function(item){
+                this.itemEditar = item;
+                var nome = this.produtos[item];
+
+                if(nome){
+                var elNome = document.getElementById("add-produto");
+                elProduto.value=nome;
+                }
+            }                
+
+    };
+
+    app.listarTodos();
         </script>
     
 </html>
